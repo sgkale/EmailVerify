@@ -1,0 +1,67 @@
+<html lang="en" ng-app="app1">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+</head>
+<body ng-controller="ctrl1">
+	
+	<div class="container">
+	
+    <form action="" style="margin:0 auto;width:360px">
+    <h2>My Account</h2>
+        <div class="row">
+                <input type="text" class="form-control" placeholder="Thai Id" ng-model="thaiId">
+        </div>
+        <div class="row">
+                <input type="text" class="form-control" placeholder="Name" ng-model="name">
+        </div>
+        <div class="row">
+        <div class="input-group">
+                <input type="text" class="form-control" placeholder="Email Id" ng-model="email">
+                <span class="input-group-addon"><i ng-class="verified ? 'fa fa-thumbs-up':'fa fa-times-circle'"></i></span>
+        </div><span ng-if="!verified" class="input-group-addon" ng-click="verify()"><a>Verify Email</a></span>
+        </div>
+        <div class="row">
+                <input type="text" class="form-control" placeholder="Phone no." ng-model="mobile">
+        </div>
+        <input type="button" ng-click="test()" class="btn btn-primary" value="test">
+    </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+    <script>
+    angular.module('app1',[])
+    .controller('ctrl1',function($scope,$http){
+    	$scope.test=function(){
+    		console.log("test");
+    		 $scope.email;
+    		 $scope.userEmail={};
+    		$http.get("http://localhost:8080/myaccount/getuser/1234").then(function(res){
+                console.log(res);
+                $scope.thaiId=res.data.thaiId;
+                $scope.name=res.data.name;
+                $scope.email=res.data.email;
+                $scope.mobile=res.data.mobile;
+                $scope.verified=res.data.isEmailVerified;
+                $scope.userEmail={
+       				 email:$scope.email
+       		 }
+            })
+    	}
+    	$scope.verify=function(){
+    		console.log("user Email",$scope.userEmail)
+    		$http({
+    					method:"POST",
+    					url: "http://localhost:8080/myaccount/verify",
+    					data:$scope.userEmail
+    				})
+    				.then(function(res){console.log(res);})
+    	}
+        
+    })
+    </script>
+</body>
+</html>
