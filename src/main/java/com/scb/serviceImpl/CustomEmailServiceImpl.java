@@ -45,7 +45,7 @@ import com.scb.util.JwtTokenDecoder;
 import com.scb.util.JwtTokenEncoder;
 
 @Service
-public class EmailServiceImpl implements CustomEmailService{
+public class CustomEmailServiceImpl implements CustomEmailService{
 
 	@Autowired
 	TokenRepository tokenRepo;
