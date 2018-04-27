@@ -4,7 +4,13 @@ import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
@@ -33,13 +39,13 @@ import com.scb.entities.User;
 import com.scb.entities.VerificationToken;
 import com.scb.repository.TokenRepository;
 import com.scb.repository.UserRepository;
-import com.scb.service.EmailService;
+import com.scb.service.CustomEmailService;
 import com.scb.util.EmailBodyCreater;
 import com.scb.util.JwtTokenDecoder;
 import com.scb.util.JwtTokenEncoder;
 
 @Service
-public class EmailServiceImpl implements EmailService{
+public class EmailServiceImpl implements CustomEmailService{
 
 	@Autowired
 	TokenRepository tokenRepo;
@@ -47,9 +53,53 @@ public class EmailServiceImpl implements EmailService{
 	@Autowired
 	UserRepository userRepo;
 
+	@Autowired
+	public JavaMailSender sender;
+
 
 	@Override
-	public String sendVerificationMail(String email) {
+	public String sendVerificationMailSmpt(String email) {
+
+		// Checking if user with email address exists
+		User user=userRepo.findByEmail(email);
+		if(user==null) {
+			return "no entry found for email address "+email;
+		}				
+		//creating verification token
+		VerificationToken token=new VerificationToken();
+		token.setThaiId(user.getThaiId());					//setting thaiId
+		token.setToken(JwtTokenEncoder.getToken(user));  	//Setting token
+		token.setExpiry(new Date()); 						//setting expiry date
+		token.setIsTokenVerified(false); 					//setting default to false(not verified)
+
+		final String FROM = "shubhamgkale@gmail.com";
+		final String TO = email;
+		final String SUBJECT = "Verify Email";
+		final String HTMLBODY = EmailBodyCreater.createBody(token.getToken());
+		final String TEXTBODY = "This email was sent through Amazon SES "
+				+ "using the AWS SDK for Java.";
+
+		MimeMessage simpleMessage = sender.createMimeMessage();        
+		try {
+			MimeMessageHelper helper = new MimeMessageHelper(simpleMessage, true);
+			helper.setTo(TO);
+			helper.setReplyTo("shubhamgkale@gmail.com");
+			helper.setFrom(FROM);
+			helper.setSubject(SUBJECT);
+			helper.setText(HTMLBODY, true);			
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		finally {            
+			sender.send(simpleMessage);
+		}
+		tokenRepo.save(token);						//store token in database
+		return "email sent";
+	}
+
+
+	@Override
+	public String sendVerificationMailAws(String email) {
 		// Checking if user with email address exists
 		User user=userRepo.findByEmail(email);
 		if(user==null) {

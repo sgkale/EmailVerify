@@ -4,11 +4,13 @@ import javax.mail.NoSuchProviderException;
 
 import com.scb.entities.User;
 
-public interface EmailService {
+public interface CustomEmailService {
 
-	String sendVerificationMail(String email);
+	String sendVerificationMailAws(String email);
 
 	String verifyToken(String token);
+
+	String sendVerificationMailSmpt(String email);
 
 
 	//String service2() throws NoSuchProviderException;

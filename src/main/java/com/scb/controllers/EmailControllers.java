@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.scb.entities.User;
 import com.scb.repository.UserRepository;
-import com.scb.service.EmailService;
+import com.scb.service.CustomEmailService;
 import com.scb.vo.VerifyRequestBodyVo;
 
 
@@ -20,7 +20,7 @@ import com.scb.vo.VerifyRequestBodyVo;
 public class EmailControllers {
 
 	@Autowired
-	private EmailService emailService;
+	private CustomEmailService emailService;
 
 	@Autowired
 	UserRepository userRepo;
@@ -58,7 +58,7 @@ public class EmailControllers {
 		if(email==null) {
 			return "No email address to verify";
 		}
-		res=emailService.sendVerificationMail(email);
+		res=emailService.sendVerificationMailSmpt(email);
 		return res;
 	}
 
