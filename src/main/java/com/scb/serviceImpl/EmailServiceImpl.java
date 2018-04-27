@@ -147,10 +147,10 @@ public class EmailServiceImpl implements EmailService{
 		    final String TO = "shubhamgkale2@gmail.com";
 
 		    // Replace smtp_username with your Amazon SES SMTP user name.
-		    final String SMTP_USERNAME = "AKIAIRS72HPRLVZWY3KA";
+		    final String SMTP_USERNAME = "";
 
 		    // Replace smtp_password with your Amazon SES SMTP password.
-		    final String SMTP_PASSWORD = "AiI7piiOnDEgrRLDUcSzbVjjIKQKMBpqH+By33VBM6/r";
+		    final String SMTP_PASSWORD = "";
 
 		    // The name of the Configuration Set to use for this message.
 		    // If you comment out or remove this variable, you will also need to
@@ -255,8 +255,8 @@ public class EmailServiceImpl implements EmailService{
 
 	  @Override
 	public void service3() {
-		  final String username = "shubhamgkale@gmail.com";
-			final String password = "srng@1995";
+		  final String username = "";
+			final String password = "";
 
 			Properties props = new Properties();
 			props.put("mail.smtp.auth", "true");
