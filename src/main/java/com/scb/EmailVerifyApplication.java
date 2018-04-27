@@ -28,7 +28,7 @@ public class EmailVerifyApplication {
 	    mailSender.setPort(587);
 	     
 	    mailSender.setUsername("shubhamgkale@gmail.com");
-	    mailSender.setPassword("srng@1995");
+	    mailSender.setPassword("password");
 	     
 	    Properties props = mailSender.getJavaMailProperties();
 	    props.put("mail.transport.protocol", "smtp");
