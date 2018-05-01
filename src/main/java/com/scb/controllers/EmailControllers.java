@@ -58,7 +58,7 @@ public class EmailControllers {
 		if(email==null) {
 			return "No email address to verify";
 		}
-		res=emailService.sendVerificationMailSmpt(email);
+		res=emailService.sendVerificationMailSmpt(email);// or use aws method
 		return res;
 	}
 
