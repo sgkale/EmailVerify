@@ -13,7 +13,11 @@ import com.scb.entities.User;
 import com.scb.repository.UserRepository;
 import com.scb.service.CustomEmailService;
 import com.scb.vo.VerifyRequestBodyVo;
-
+/*
+ * @Author - Shubham Kale
+ * @Class - EmailControllers
+ * @Description - controllers for verification 
+ */
 
 @RestController
 @RequestMapping(value="/myaccount")
